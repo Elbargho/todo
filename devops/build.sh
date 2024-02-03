@@ -3,9 +3,6 @@
 TODO_REACT_FOLDER="todo_react"
 TODO_BE_FOLDER="todo_be"
 
-log_stage "2.5: Test stage"
-check_status "Test stage succeeded"
-
 log_stage "3: Running yarn command..."
 cd "$TODO_REACT_FOLDER"
 yarn
