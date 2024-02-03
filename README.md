@@ -22,11 +22,12 @@
     npm install -g yarn
     ```
     
-7. Initialize databases - run `devops/init_databases.sh`
+7. Initialize databases - run `devops/pipelines/init_databases.sh`
 
 ## Starting backend server
 
-8. Run `devops/start_server.sh`
+1. Run `devops/pipelines/main_build.sh`
+2. Run `devops/pipelines/start_server.sh`
 
 Happy Hacking! :smile:
 

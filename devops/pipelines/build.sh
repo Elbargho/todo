@@ -4,7 +4,7 @@ TODO_REACT_FOLDER="todo_react"
 TODO_BE_FOLDER="todo_be"
 
 log_stage "3: Running yarn command..."
-cd "$TODO_REACT_FOLDER"
+cd "../../$TODO_REACT_FOLDER"
 yarn
 check_status "yarn command executed successfully"
 

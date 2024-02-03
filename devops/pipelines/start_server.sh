@@ -6,4 +6,4 @@ source interface.sh
 
 log_stage "Starting server..."
 cd "../../${TODO_BE_FOLDER}"
-python app.py
+py app.py
