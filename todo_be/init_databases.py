@@ -16,7 +16,7 @@ def initDBs(debug):
 
 if __name__ == "__main__":
     config.read("../devops/config.properties")
-    debug = config.getboolean("DEBUG", "debug")
+    debug = config.getboolean("DEBUG", "debug", fallback=False)
     initDBs(debug)
 
     tasks_dbm.addCategory("My Day")
