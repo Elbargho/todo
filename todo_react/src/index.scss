@@ -1,0 +1,170 @@
+$body-color: #161a1f;
+$text-color: lightgrey;
+$left-pane-color: #121212;
+$highlight-color: #1565c0;
+$main-divider-color: #2f2f2f;
+$hint-text-color: #757575;
+$task-container-color: #1d1d1d;
+$checkbox-hover-color: goldenrod;
+$tracker-color-red: "darkred";
+$tracker-color-green: "darkgreen";
+$tracker-color-orange: "darkorange";
+$tracker-color-yellow: "yellow";
+$tracker-color-purple: "rebeccapurple";
+$tracker-color-brown: "saddlebrown";
+$tracker-color-pink: "pink";
+$tracker-color-gray: "darkgray";
+
+:root {
+  --body-color: #{$body-color};
+  --text-color: #{$text-color};
+  --left-pane-color: #{$left-pane-color};
+  --highlight-color: #{$highlight-color};
+  --main-divider-color: #{$main-divider-color};
+  --hint-text-color: #{$hint-text-color};
+  --task-container-color: #{$task-container-color};
+  --checkbox-hover-color: #{$checkbox-hover-color};
+  --tracker-color-red: #{$tracker-color-red};
+  --tracker-color-green: #{$tracker-color-green};
+  --tracker-color-orange: #{$tracker-color-orange};
+  --tracker-color-yellow: #{$tracker-color-yellow};
+  --tracker-color-purple: #{$tracker-color-purple};
+  --tracker-color-brown: #{$tracker-color-brown};
+  --tracker-color-pink: #{$tracker-color-pink};
+  --tracker-color-gray: #{$tracker-color-gray};
+  --tracker-color-grey: #{$tracker-color-gray};
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to right, $left-pane-color 300px, $body-color 300px);
+}
+
+.MuiTypography-root,
+.MuiSvgIcon-root,
+.MuiTextField-root,
+.MuiTextField-root label,
+input {
+  color: $text-color;
+}
+
+.MuiInputBase-root {
+  color: $text-color !important;
+}
+
+.MuiTextField-root input:focus,
+textarea {
+  border: "none";
+  box-shadow: "none";
+}
+
+.MuiAccordionSummary-content {
+  align-items: center;
+  margin: 9px 0px !important;
+}
+
+.LeftPane {
+  width: 300px;
+  flex: none;
+  background-color: $left-pane-color;
+}
+
+.Mui-selected {
+  background-color: $highlight-color !important;
+}
+
+.MuiTableCell-root:first-child {
+  border-left: 1px solid $text-color !important;
+}
+
+.MuiTableCell-root:last-child {
+  border-right: 1px solid $text-color !important;
+}
+
+.MuiTableRow-root:first-child {
+  .MuiTableCell-root {
+    border-top: 0px !important;
+  }
+}
+
+.MuiTableRow-root:last-child {
+  .MuiTableCell-root {
+    border-bottom: 1px solid $text-color !important;
+  }
+}
+
+.NoteContainer {
+  background-color: $task-container-color;
+  padding: 18px 24px 18px 18px;
+  word-break: break-all;
+  align-items: center;
+
+  .MuiFormControl-root {
+    width: 100%;
+  }
+
+  .MuiInputBase-root {
+    padding: 0;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border: 0;
+  }
+}
+
+.TaskContainer {
+  background-color: $task-container-color;
+  display: flex !important;
+  height: 60px;
+  align-items: center;
+  padding-left: 7px;
+  padding-right: 55px;
+  cursor: pointer;
+}
+
+.css-1oqqzyl-MuiContainer-root {
+  max-width: none !important;
+}
+
+.MuiIconButton-root {
+  padding: 0px !important;
+  cursor: pointer;
+}
+
+.MuiIconButton-root svg:hover {
+  background-color: hsl(215, 70%, 33%);
+}
+
+.CompletedTasks {
+  .MuiContainer-root:first-child {
+    display: none;
+  }
+}
+
+.MuiPaper-root {
+  background-color: $task-container-color !important;
+}
+
+div[class$="MuiPaper-root-MuiAccordion-root"]:before {
+  display: none;
+}
+
+.ColorsMenu {
+  .MuiList-root {
+    padding: 0;
+  }
+  .MuiListItemIcon-root:hover {
+    background-color: #757575;
+  }
+  .MuiButtonBase-root:hover {
+    background-color: transparent;
+  }
+}
+
+[contenteditable] {
+  outline: 0px solid transparent;
+}

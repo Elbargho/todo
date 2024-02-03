@@ -1,0 +1,35 @@
+# todo_react
+# dependencies
+todo_react/node_modules
+todo_react/.pnp
+.pnp.js
+
+# testing
+todo_react/coverage
+
+# production
+todo_react/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# todo_be
+# properties
+devops/config.properties
+
+# production
+todo_be/build
+
+# storage data
+*.db
+
+# python-generated
+__pycache__/
