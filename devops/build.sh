@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source interface.sh
-
 TODO_REACT_FOLDER="todo_react"
 TODO_BE_FOLDER="todo_be"
 
