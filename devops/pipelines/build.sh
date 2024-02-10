@@ -14,6 +14,7 @@ cd ".."
 check_status "yarn build command executed successfully"
 
 log_stage "5: Copying $TODO_REACT_FOLDER/build to $TODO_BE_FOLDER"
+rm -r "${TODO_REACT_FOLDER}/build"
 cp -r "${TODO_REACT_FOLDER}/build" "$TODO_BE_FOLDER"
 check_status "Copied build folder succesfully"
 
