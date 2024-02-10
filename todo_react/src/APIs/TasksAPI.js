@@ -1,8 +1,13 @@
 import axios from "axios";
 
+let baseUrl = window.location.origin;
+if(baseUrl.includes("localhost")) {
+  baseUrl = "http://127.0.0.1:5000";
+}
+
 const getCategories = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:5000/tasks/getCategories");
+    const res = await axios.get(`${baseUrl}/tasks/getCategories`);
     return res.data;
   } catch (error) {
     alert(error);
@@ -12,7 +17,7 @@ const getCategories = async () => {
 
 const getCurrentDay = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:5000/tasks/getCurrentDay");
+    const res = await axios.get(`${baseUrl}/tasks/getCurrentDay`);
     return res.data;
   } catch (error) {
     alert(error);
@@ -23,7 +28,7 @@ const getCurrentDay = async () => {
 const getCategoryTasks = async (category_id, current_day) => {
   try {
     const res = await axios.get(
-      `http://127.0.0.1:5000/tasks/getCategoryTasks?category_id=${category_id}&current_day=${current_day}`
+      `${baseUrl}/tasks/getCategoryTasks?category_id=${category_id}&current_day=${current_day}`
     );
     return res.data;
   } catch (error) {
@@ -35,7 +40,7 @@ const getCategoryTasks = async (category_id, current_day) => {
 const updateTaskStatus = async (task_id, sub_task_id, is_multi_task) => {
   const data = { task_id: task_id, sub_task_id: sub_task_id, is_multi_task: is_multi_task };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tasks/updateTaskStatus", data);
+    const res = await axios.post(`${baseUrl}/tasks/updateTaskStatus`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -46,7 +51,7 @@ const updateTaskStatus = async (task_id, sub_task_id, is_multi_task) => {
 const editTask = async (task_id, category_id, raw_title, current_day) => {
   const data = { task_id: task_id, category_id: category_id, raw_title: raw_title, current_day: current_day };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tasks/editTask", data);
+    const res = await axios.post(`${baseUrl}/tasks/editTask`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -57,7 +62,7 @@ const editTask = async (task_id, category_id, raw_title, current_day) => {
 const deleteTask = async (id) => {
   const data = { task_id: id };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tasks/deleteTask", data);
+    const res = await axios.post(`${baseUrl}/tasks/deleteTask`, data);
     return { statusCode: res.status };
   } catch (error) {
     alert(error);
@@ -68,7 +73,7 @@ const deleteTask = async (id) => {
 const addTask = async (category_id, raw_title, current_day) => {
   const data = { category_id: category_id, raw_title: raw_title, current_day: current_day };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tasks/addTask", data);
+    const res = await axios.post(`${baseUrl}/tasks/addTask`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -79,7 +84,7 @@ const addTask = async (category_id, raw_title, current_day) => {
 const getNextDayTasks = async (category_id, current_day) => {
   try {
     const res = await axios.get(
-      `http://127.0.0.1:5000/tasks/getNextDayTasks?category_id=${category_id}&current_day=${current_day}`
+      `${baseUrl}/tasks/getNextDayTasks?category_id=${category_id}&current_day=${current_day}`
     );
     return res.data;
   } catch (error) {
@@ -91,7 +96,7 @@ const getNextDayTasks = async (category_id, current_day) => {
 const addCategory = async (name) => {
   const data = { name: name };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tasks/addCategory", data);
+    const res = await axios.post(`${baseUrl}/tasks/addCategory`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -102,7 +107,7 @@ const addCategory = async (name) => {
 const editCategory = async (id, new_name) => {
   const data = { id: id, new_name: new_name };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tasks/editCategory", data);
+    const res = await axios.post(`${baseUrl}/tasks/editCategory`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -113,7 +118,7 @@ const editCategory = async (id, new_name) => {
 const deleteCategory = async (id) => {
   const data = { id: id };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tasks/deleteCategory", data);
+    const res = await axios.post(`${baseUrl}/tasks/deleteCategory`, data);
     return { statusCode: res.status };
   } catch (error) {
     alert(error);

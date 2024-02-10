@@ -1,8 +1,13 @@
 import axios from "axios";
 
+let baseUrl = window.location.origin;
+if(baseUrl.includes("localhost")) {
+  baseUrl = "http://127.0.0.1:5000";
+}
+
 const getCategories = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:5000/tracker/getCategories");
+    const res = await axios.get(`${baseUrl}/tracker/getCategories`);
     return res.data;
   } catch (error) {
     alert(error);
@@ -13,7 +18,7 @@ const getCategories = async () => {
 const addCategory = async (title, color) => {
   const data = { title: title, color: color };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tracker/addCategory", data);
+    const res = await axios.post(`${baseUrl}/tracker/addCategory`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -24,7 +29,7 @@ const addCategory = async (title, color) => {
 const updateCategory = async (id, new_title, new_color) => {
   const data = { id: id, new_title: new_title, new_color: new_color };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tracker/updateCategory", data);
+    const res = await axios.post(`${baseUrl}/tracker/updateCategory`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -35,7 +40,7 @@ const updateCategory = async (id, new_title, new_color) => {
 const getCategoriesStatuses = async (fromDate, toDate) => {
   try {
     const res = await axios.get(
-      `http://127.0.0.1:5000/tracker/getCategoriesStatuses?fromDate=${fromDate}&toDate=${toDate}`
+      `${baseUrl}/tracker/getCategoriesStatuses?fromDate=${fromDate}&toDate=${toDate}`
     );
     return res.data;
   } catch (error) {
@@ -47,7 +52,7 @@ const getCategoriesStatuses = async (fromDate, toDate) => {
 const updateCategoryStatus = async (id, toAdd, date) => {
   const data = { id: id, toAdd: toAdd, date: date };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tracker/updateCategoryStatus", data);
+    const res = await axios.post(`${baseUrl}/tracker/updateCategoryStatus`, data);
     return res.data;
   } catch (error) {
     alert(error);
@@ -58,7 +63,7 @@ const updateCategoryStatus = async (id, toAdd, date) => {
 const deleteCategory = async (id) => {
   const data = { id: id };
   try {
-    const res = await axios.post("http://127.0.0.1:5000/tracker/deleteCategory", data);
+    const res = await axios.post(`${baseUrl}/tracker/deleteCategory`, data);
     return { statusCode: res.status };
   } catch (error) {
     alert(error);
