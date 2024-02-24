@@ -20,6 +20,7 @@ export default function TaskAdderInput({ is_done, value, setTaskAdderInputId, se
           ["!r", "1-5"],
           ["!r", "2*"],
           ["!r", "1+"],
+          ["!r", "2, 4"],
           ["!st", "t1, t2"]
         ]}
       />
