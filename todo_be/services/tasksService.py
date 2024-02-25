@@ -172,7 +172,6 @@ def isTaskDueToday(repeat, created_at, current_day_str):
     else:
         days = [int(x) for x in repeat.split(",")]
         weekday = (current_day.weekday() + 1) % 7 + 1
-        print(days, weekday)
         return weekday in days
     return False
 

@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import ToDoList from "./components/Todo/App";
-import { ApplicationMenu } from "./components/Common";
+import { ApplicationMenu, PopUp } from "./components/Common";
 import Tracker from "./components/Tracker/App";
 import Notes from "./components/Notes/App";
 import { useState } from "react";
@@ -10,8 +10,10 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 
 export default function App() {
   const [selectedApp, setSelectedApp] = useState(<ToDoList />);
+
   return (
     <Container sx={{ display: "flex", position: "relative", height: "100vh" }} maxWidth={false} disableGutters>
+      <PopUp />
       {selectedApp}
       <ApplicationMenu
         appsList={[

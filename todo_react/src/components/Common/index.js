@@ -7,6 +7,7 @@ import AddItem from "./AddItem";
 import ContextMenu from "./ContextMenu";
 import OutsideClickDetector from "./OutsideClickDetector";
 import ApplicationMenu from "./ApplicationMenu";
+import { PopUp, showPopUp } from "./PopUp";
 
 export {
   Divider,
@@ -18,4 +19,6 @@ export {
   ContextMenu,
   OutsideClickDetector,
   ApplicationMenu,
+  PopUp,
+  showPopUp
 };

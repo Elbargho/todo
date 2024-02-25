@@ -145,10 +145,6 @@ textarea {
   }
 }
 
-.MuiPaper-root {
-  background-color: $task-container-color !important;
-}
-
 div[class$="MuiPaper-root-MuiAccordion-root"]:before {
   display: none;
 }
@@ -163,6 +159,10 @@ div[class$="MuiPaper-root-MuiAccordion-root"]:before {
   .MuiButtonBase-root:hover {
     background-color: transparent;
   }
+}
+
+.MuiMenu-paper {
+  background-color: $task-container-color !important;
 }
 
 [contenteditable] {
