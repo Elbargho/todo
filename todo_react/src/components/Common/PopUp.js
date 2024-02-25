@@ -40,7 +40,7 @@ export function PopUp() {
       <Alert
         variant="filled"
         severity={type}
-        sx={{ bgcolor: "success.dark", width: "fit-content", padding: "0px 10px 0px 8px" }}
+        sx={{ bgcolor: `${type}.dark`, width: "fit-content", padding: "0px 10px 0px 8px" }}
       >
         {message}
       </Alert>

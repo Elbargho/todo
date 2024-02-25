@@ -1,16 +1,12 @@
 import axios from "axios";
-
-let baseUrl = window.location.origin;
-if(baseUrl.includes("localhost")) {
-  baseUrl = "http://127.0.0.1:5000";
-}
+import { baseUrl, showErrorPopUp } from "./Common";
 
 const getNotesList = async () => {
   try {
     const res = await axios.get(`${baseUrl}/notes/getNotesList`);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -20,7 +16,7 @@ const getNoteContents = async (note_list_id) => {
     const res = await axios.get(`${baseUrl}/notes/getNoteContents?note_list_id=${note_list_id}`);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -31,7 +27,7 @@ const addNoteList = async (note_name) => {
     const res = await axios.post(`${baseUrl}/notes/addNoteList`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -42,7 +38,7 @@ const addNote = async (note_list_id, text) => {
     const res = await axios.post(`${baseUrl}/notes/addNote`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -53,7 +49,7 @@ const editNoteList = async (id, new_name) => {
     const res = await axios.post(`${baseUrl}/notes/editNoteList`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -64,7 +60,7 @@ const editNote = async (id, new_text) => {
     const res = await axios.post(`${baseUrl}/notes/editNote`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -74,7 +70,7 @@ const deleteNoteList = async (id) => {
     const res = await axios.delete(`${baseUrl}/notes/deleteNoteList?id=${id}`);
     return { statusCode: res.status };
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -84,7 +80,7 @@ const deleteNote = async (id) => {
     const res = await axios.delete(`${baseUrl}/notes/deleteNote?id=${id}`);
     return { statusCode: res.status };
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };

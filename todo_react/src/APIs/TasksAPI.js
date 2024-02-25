@@ -1,16 +1,12 @@
 import axios from "axios";
-
-let baseUrl = window.location.origin;
-if(baseUrl.includes("localhost")) {
-  baseUrl = "http://127.0.0.1:5000";
-}
+import { baseUrl, showErrorPopUp } from "./Common";
 
 const getCategories = async () => {
   try {
     const res = await axios.get(`${baseUrl}/tasks/getCategories`);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -20,7 +16,7 @@ const getCurrentDay = async () => {
     const res = await axios.get(`${baseUrl}/tasks/getCurrentDay`);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -32,7 +28,7 @@ const getCategoryTasks = async (category_id, current_day) => {
     );
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -43,7 +39,7 @@ const updateTaskStatus = async (task_id, sub_task_id, is_multi_task) => {
     const res = await axios.post(`${baseUrl}/tasks/updateTaskStatus`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -54,7 +50,7 @@ const editTask = async (task_id, category_id, raw_title, current_day) => {
     const res = await axios.post(`${baseUrl}/tasks/editTask`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -65,7 +61,7 @@ const deleteTask = async (id) => {
     const res = await axios.post(`${baseUrl}/tasks/deleteTask`, data);
     return { statusCode: res.status };
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -76,7 +72,7 @@ const addTask = async (category_id, raw_title, current_day) => {
     const res = await axios.post(`${baseUrl}/tasks/addTask`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -88,7 +84,7 @@ const getNextDayTasks = async (category_id, current_day) => {
     );
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -99,7 +95,7 @@ const addCategory = async (name) => {
     const res = await axios.post(`${baseUrl}/tasks/addCategory`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -110,7 +106,7 @@ const editCategory = async (id, new_name) => {
     const res = await axios.post(`${baseUrl}/tasks/editCategory`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -121,7 +117,7 @@ const deleteCategory = async (id) => {
     const res = await axios.post(`${baseUrl}/tasks/deleteCategory`, data);
     return { statusCode: res.status };
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };

@@ -4,6 +4,7 @@ import { OneTask, MultiTask, CompletedTasks } from ".";
 import { Divider, AddItem as AddATask, ContextMenu } from "../Common";
 import TaskAdderInput from "./TaskAdderInput";
 import API from "../../APIs/TasksAPI";
+import { showPopUp } from "../Common";
 
 const SubTaskDoneAudio = new Audio("/audio/SubTask_Done.mp3");
 const TaskDoneAudio = new Audio("/audio/Task_Done.mp3");
@@ -126,8 +127,10 @@ export default function Category({ id, tasks, current_day }) {
   const addTask = async (rawTitle) => {
     const newTask = await API.addTask(id, rawTitle, current_day);
     if (newTask != null) {
-      const updatedCategoryTasks = [newTask, ...categoryTasks];
-      setCategoryTasks(updatedCategoryTasks);
+      if (Object.keys(newTask).length > 0) {
+        const updatedCategoryTasks = [newTask, ...categoryTasks];
+        setCategoryTasks(updatedCategoryTasks);
+      } else showPopUp("success", "New Task added");
     }
   };
 

@@ -1,5 +1,5 @@
 from databases.tracker import dbm
-from .interface import *
+from .common import *
 
 
 ################### ENDPOINT PROCESSORS ###################

@@ -1,5 +1,5 @@
 from databases.notes import dbm
-from .interface import *
+from .common import *
 
 
 ################### ENDPOINT PROCESSORS ###################

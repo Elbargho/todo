@@ -1,16 +1,12 @@
 import axios from "axios";
-
-let baseUrl = window.location.origin;
-if(baseUrl.includes("localhost")) {
-  baseUrl = "http://127.0.0.1:5000";
-}
+import { baseUrl, showErrorPopUp } from "./Common";
 
 const getCategories = async () => {
   try {
     const res = await axios.get(`${baseUrl}/tracker/getCategories`);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -21,7 +17,7 @@ const addCategory = async (title, color) => {
     const res = await axios.post(`${baseUrl}/tracker/addCategory`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -32,7 +28,7 @@ const updateCategory = async (id, new_title, new_color) => {
     const res = await axios.post(`${baseUrl}/tracker/updateCategory`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -44,7 +40,7 @@ const getCategoriesStatuses = async (fromDate, toDate) => {
     );
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -55,7 +51,7 @@ const updateCategoryStatus = async (id, toAdd, date) => {
     const res = await axios.post(`${baseUrl}/tracker/updateCategoryStatus`, data);
     return res.data;
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };
@@ -66,7 +62,7 @@ const deleteCategory = async (id) => {
     const res = await axios.post(`${baseUrl}/tracker/deleteCategory`, data);
     return { statusCode: res.status };
   } catch (error) {
-    alert(error);
+    showErrorPopUp(error);
     return null;
   }
 };

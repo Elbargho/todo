@@ -1,6 +1,6 @@
 from databases.tasks import dbm
 from datetime import datetime
-from .interface import *
+from .common import *
 
 
 ################### ENDPOINT PROCESSORS ###################
