@@ -98,7 +98,7 @@ export default function CategoriesList({
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
-          <ListItemText color={"primary.dark"} primary={"New List"} />
+          <ListItemText color={"primary.dark"} primary={"New Category"} />
         </ListItemButton>
       </ListItem>
       <Divider />
