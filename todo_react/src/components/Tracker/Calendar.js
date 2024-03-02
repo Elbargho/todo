@@ -11,6 +11,7 @@ const currMonthCellStyle = {
   padding: "5px",
   border: "2px dashed var(--text-color)",
   color: "var(--text-color)",
+  width: "CALC(100% / 7)"
 };
 
 const otherMonthCellStyle = {
@@ -43,7 +44,7 @@ export default function Calendar({ calendar, categories, selectedDate, setSelect
         </TableCell>
       );
       if ((i + 1) % 7 == 0) {
-        tableRows.push(<TableRow key={i}>{tableCells}</TableRow>);
+        tableRows.push(<TableRow sx={{ height: "CALC(100% / 7)" }} key={i}>{tableCells}</TableRow>);
         tableCells = [];
       }
     });

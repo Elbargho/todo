@@ -20,6 +20,7 @@ def updateCategory(id, new_title, new_color):
 
 def getCategoriesStatuses(fromDate, toDate):
     categories_statuses = dbm.getCategoriesStatuses(fromDate, toDate)
+    categories_statuses = [cs for cs in categories_statuses if cs["times_done"] > 0]
     res = {}
     for category_status in categories_statuses:
         if category_status["done_at"] not in res:

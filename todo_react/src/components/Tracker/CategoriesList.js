@@ -56,6 +56,7 @@ export default function CategoriesList({
             await editCategory(category_id, e, selectedColor);
           }}
           unMountComponent={unMountAdderInput}
+          shouldValueChange={false}
         >
           <ColorPicker
             selectedColor={selectedColor}

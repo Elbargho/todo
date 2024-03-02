@@ -1,15 +1,15 @@
 const getCurrentDate = () => {
-  return new Date().toLocaleDateString('en-CA');
-}
+  return new Date().toLocaleDateString("en-CA");
+};
 
 const getHeaderFormattedDate = (stringDate) => {
   const date = new Date(stringDate);
-  return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' }).format(date);
-}
+  return new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long" }).format(date);
+};
 
 const getFormattedDate = (year, month, day) => {
-  return new Date(year, month - 1, day).toLocaleDateString('en-CA');
-}
+  return new Date(year, month - 1, day).toLocaleDateString("en-CA");
+};
 
 const getMonthDetails = (offset) => {
   const currentDate = new Date();
@@ -20,22 +20,21 @@ const getMonthDetails = (offset) => {
   return [monthFirstDay, month, year];
 };
 
-const getCalendarDetails = (monthFirstDay, month, year, categoriesStatuses, categories) => {
+const getCalendarDetails = (monthFirstDay, month, year, categoriesStatuses) => {
   const calendarDays = {};
-  let statuses = Object.fromEntries(categories.map(category => [category, 0]));
   for (var i = 0; i < 42; i++) {
-    let date = new Date(year, month - 1, 1 - monthFirstDay + i).toLocaleDateString('en-CA');
-    calendarDays[date] = { ...statuses, ...categoriesStatuses[date] };
+    let date = new Date(year, month - 1, 1 - monthFirstDay + i).toLocaleDateString("en-CA");
+    calendarDays[date] = { ...categoriesStatuses[date] };
   }
   return calendarDays;
-}
+};
 
 const CalendarManager = {
   getCurrentDate,
   getMonthDetails,
   getCalendarDetails,
   getHeaderFormattedDate,
-  getFormattedDate
-}
+  getFormattedDate,
+};
 
 export default CalendarManager;

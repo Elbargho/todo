@@ -8,12 +8,7 @@ export default function CalendarCell({ date, listsDetails, setSelectedDate }) {
   };
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{ width: "100%", height: "100%", cursor: "pointer" }}
-      onClick={cellOnClick}
-      disableGutters
-    >
+    <Container maxWidth={false} sx={{ cursor: "pointer", height: "100%" }} onClick={cellOnClick} disableGutters>
       <div style={{ textAlign: "right" }}>{date.split("-")[2]}</div>
       <Container
         maxWidth={false}
