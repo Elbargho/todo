@@ -38,16 +38,23 @@ def updateCategoryStatus(id, to_add, date):
         (id, date),
     )
     if res != []:
-        times_done = alterQuery(
-            "UPDATE categories_statuses SET times_done = times_done + ? WHERE category_id = ? AND done_at = ? RETURNING times_done",
-            (to_add, id, date),
-        )
+        if res[0]["times_done"] + to_add == 0:
+            alterQuery(
+                "DELETE FROM categories_statuses WHERE category_id = ? AND done_at = ?",
+                (id, date),
+            )
+            return 0
+        else:
+            times_done = alterQuery(
+                "UPDATE categories_statuses SET times_done = times_done + ? WHERE category_id = ? AND done_at = ? RETURNING times_done",
+                (to_add, id, date),
+            )
     else:
         times_done = alterQuery(
             "INSERT INTO categories_statuses (category_id, times_done, done_at) VALUES (?, ?, ?) RETURNING times_done",
             (id, 1, date),
         )
-    return times_done
+    return times_done[0]["times_done"]
 
 
 def updateCategory(id, new_title, new_color):

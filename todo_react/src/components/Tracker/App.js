@@ -39,9 +39,9 @@ export default function Tracker() {
     const res = await API.updateCategoryStatus(category_id, toAdd, selectedDate);
     if (res != null) {
       const newCategories = { ...categories };
-      newCategories[category_id].times_done += toAdd;
       const newCalendar = { ...calendar };
-      newCalendar[selectedDate][category_id] = newCategories[category_id].times_done;
+      newCategories[category_id].times_done = res[category_id];
+      newCalendar[selectedDate][category_id] = res[category_id];
       if (newCalendar[selectedDate][category_id] == 0) delete newCalendar[selectedDate][category_id];
       setCalendar(newCalendar);
       setCategories(newCategories);
