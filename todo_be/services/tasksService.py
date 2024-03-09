@@ -13,7 +13,8 @@ def getCurrentDay():
     return dbm.getCurrentDay()
 
 
-def getCategoryTasks(category_id, current_day):
+# Control the order of the tasks by changing "reverse" arg
+def getCategoryTasks(category_id, current_day, reverse=False):
     tasks = dbm.getCategoryTasks(category_id)
     tasks_order = dbm.getTasksOrderList()
     if int(category_id) == 1:
@@ -24,7 +25,7 @@ def getCategoryTasks(category_id, current_day):
                 if (isTaskDueToday(task["repeat"], task["created_at"], current_day))
             ],
             key=lambda x: tasks_order.index(x["id"]),
-            reverse=True,
+            reverse=reverse,
         )
     return sorted(
         [
@@ -32,7 +33,7 @@ def getCategoryTasks(category_id, current_day):
             for task in tasks
         ],
         key=lambda x: tasks_order.index(x["id"]),
-        reverse=True,
+        reverse=reverse,
     )
 
 
@@ -104,8 +105,9 @@ def addTask(category_id, raw_title, current_day, times_done=0):
 def editTask(task_id, category_id, raw_title, current_day):
     deactivateTask(task_id)
     task = dbm.getTask(task_id)
+    times_done = task["times_done"] if task["times_done"] != None else 0
     new_task_id, new_task = addTaskReturningRawData(
-        task["category_id"], raw_title, task["times_done"], current_day
+        task["category_id"], raw_title, times_done, current_day
     )
     dbm.addTaskHistory(task_id, new_task_id)
     tasks_order = dbm.getTasksOrderList()

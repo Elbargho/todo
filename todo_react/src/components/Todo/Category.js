@@ -128,7 +128,7 @@ export default function Category({ id, tasks, current_day }) {
     const newTask = await API.addTask(id, rawTitle, current_day);
     if (newTask != null) {
       if (Object.keys(newTask).length > 0) {
-        const updatedCategoryTasks = [newTask, ...categoryTasks];
+        const updatedCategoryTasks = [...categoryTasks, newTask];
         setCategoryTasks(updatedCategoryTasks);
       } else showPopUp("success", "New Task added");
     }
@@ -152,12 +152,19 @@ export default function Category({ id, tasks, current_day }) {
   return (
     <Container maxWidth={false}>
       <Container sx={{ bgcolor: "var(--task-container-color)" }} maxWidth={false} disableGutters>
-        {taskAdderInputId !== -1 ? (
-          <AddATask onClick={addATaskOnClick} title={"Add a task"} />
-        ) : (
-          <TaskAdderInput is_done={0} value={""} setTaskAdderInputId={setTaskAdderInputId} setTaskRawTitle={addTask} />
-        )}
+        <AddATask onClick={addATaskOnClick} title={"Add a task"} />
         {tasksContainer}
+        {taskAdderInputId === -1 && (
+          <>
+            <Divider />
+            <TaskAdderInput
+              is_done={0}
+              value={""}
+              setTaskAdderInputId={setTaskAdderInputId}
+              setTaskRawTitle={addTask}
+            />
+          </>
+        )}
       </Container>
       <CompletedTasks>{completedTasksContainer}</CompletedTasks>
       {contextMenu}
