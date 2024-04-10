@@ -31,14 +31,8 @@ export default function NotesContainer({ note_list_id, notes }) {
   };
 
   const editNote = async (note_id, text) => {
-    if (text != editableNotes.find((note) => note.id == note_id).text) {
-      let newEditableNotes = [...editableNotes];
-      const data = await API.editNote(note_id, text);
-      if (data != null) {
-        newEditableNotes.find((note) => note.id == note_id).text = text;
-        setEditableNotes(newEditableNotes);
-      }
-    }
+    if (text != editableNotes.find((note) => note.id == note_id).text)
+      await API.editNote(note_id, text);
   };
 
   const deleteNote = async (note_id) => {
