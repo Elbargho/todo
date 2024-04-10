@@ -66,6 +66,17 @@ const deleteTask = async (id) => {
   }
 };
 
+const disableTaskToday = async (id) => {
+  const data = { task_id: id };
+  try {
+    const res = await axios.post(`${baseUrl}/tasks/disableTaskToday`, data);
+    return { statusCode: res.status };
+  } catch (error) {
+    showErrorPopUp(error);
+    return null;
+  }
+};
+
 const addTask = async (category_id, raw_title, current_day) => {
   const data = { category_id: category_id, raw_title: raw_title, current_day: current_day };
   try {
@@ -129,11 +140,12 @@ const API = {
   updateTaskStatus,
   editTask,
   deleteTask,
+  disableTaskToday,
   addTask,
   getNextDayTasks,
   addCategory,
   editCategory,
-  deleteCategory,
+  deleteCategory
 };
 
 export default API;

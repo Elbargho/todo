@@ -114,16 +114,6 @@ export default function Category({ id, tasks, current_day }) {
     }
   };
 
-  const deleteTask = async (task_id) => {
-    const res = await API.deleteTask(task_id);
-    if (res.statusCode == 204) {
-      const updatedCategoryTasks = [...categoryTasks];
-      const idx = updatedCategoryTasks.findIndex((task) => task.id == task_id);
-      updatedCategoryTasks.splice(idx, 1);
-      setCategoryTasks(updatedCategoryTasks);
-    }
-  };
-
   const addTask = async (rawTitle) => {
     const newTask = await API.addTask(id, rawTitle, current_day);
     if (newTask != null) {
@@ -134,10 +124,26 @@ export default function Category({ id, tasks, current_day }) {
     }
   };
 
+  const removeTaskFromCategoryTasks = (task_id) => {
+    const updatedCategoryTasks = [...categoryTasks];
+    const idx = updatedCategoryTasks.findIndex((task) => task.id == task_id);
+    updatedCategoryTasks.splice(idx, 1);
+    setCategoryTasks(updatedCategoryTasks);
+  };
+
+  const deleteTask = async (task_id) => {
+    const res = await API.deleteTask(task_id);
+    if (res != null) removeTaskFromCategoryTasks(task_id);
+  };
+
+  const disableTaskToday = async (task_id) => {
+    const res = await API.disableTaskToday(task_id);
+    if (res != null) removeTaskFromCategoryTasks(task_id);
+  };
+
   const { contextMenu, handleContextMenu } = ContextMenu({
-    editItem: (note_id) => {
-      setTaskAdderInputId(note_id);
-    },
+    editItem: setTaskAdderInputId,
+    disableToday: id == 1 ? disableTaskToday : null,
     deleteItem: deleteTask,
   });
 

@@ -14,6 +14,7 @@ CREATE TABLE tasks (
     repeat TEXT,
     times_done INTEGER,
     is_active INTEGER,
+    disable_today INTEGER,
     created_at TIMESTAMP
 );
 

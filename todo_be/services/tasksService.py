@@ -129,6 +129,11 @@ def deleteTask(task_id):
     return {}, 204
 
 
+def disableTaskToday(task_id):
+    dbm.updateTaskDisableToday(task_id, 0)
+    return {}, 204
+
+
 def getNextDayTasks(category_id, current_day):
     dbm.updateNextDayTasks()
     current_day = dbm.addNextDay(current_day)

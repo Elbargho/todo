@@ -23,8 +23,8 @@ def addTask(category_id, title, raw_title, is_done, repeat, times_done, created_
     created_at = created_at.split(" ")[1]
 
     return alterQuery(
-        "INSERT INTO tasks (category_id, title, raw_title, is_done, repeat, times_done, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
-        (category_id, title, raw_title, is_done, repeat, times_done, 1, created_at),
+        "INSERT INTO tasks (category_id, title, raw_title, is_done, repeat, times_done, is_active, disable_today, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+        (category_id, title, raw_title, is_done, repeat, times_done, 1, 0, created_at),
     )[0]["id"]
 
 
@@ -61,7 +61,7 @@ def getCategories():
 def getCategoryTasks(category_id):
     if int(category_id) == 1:
         return selectQuery(
-            "SELECT t.*, c.name as category_name FROM tasks AS t JOIN categories AS c ON t.category_id = c.id WHERE t.is_active = 1 AND c.is_active = 1 ORDER BY t.id DESC"
+            "SELECT t.*, c.name as category_name FROM tasks AS t JOIN categories AS c ON t.category_id = c.id WHERE t.disable_today = 0 AND t.is_active = 1 AND c.is_active = 1 ORDER BY t.id DESC"
         )
     return selectQuery(
         "SELECT * FROM tasks WHERE is_active = 1 AND category_id = ? ORDER BY id DESC",
@@ -90,7 +90,9 @@ def getTaskFirstUndoneSubTaskId(task_id):
     return selectQuery(
         "SELECT MIN(id) AS min_id FROM sub_tasks WHERE is_done = 0 AND task_id = ?",
         (task_id,),
-    )[0]["min_id"]
+    )[
+        0
+    ]["min_id"]
 
 
 def getTasksOrderList():
@@ -114,7 +116,9 @@ def updateSubTaskIsDone(id):
     return alterQuery(
         "UPDATE sub_tasks SET is_done = 1 - is_done WHERE id = ? RETURNING is_done",
         (id,),
-    )[0]["is_done"]
+    )[
+        0
+    ]["is_done"]
 
 
 def updateTaskAllSubTasksIsDone(task_id):
@@ -131,13 +135,15 @@ def updateTaskIsDone(id, status=None):
 
 
 def updateTaskTimesDone(id, to_add):
-    return alterQuery(
-        "UPDATE tasks SET times_done = times_done + ? WHERE id = ?", (to_add, id)
-    )
+    return alterQuery("UPDATE tasks SET times_done = times_done + ? WHERE id = ?", (to_add, id))
 
 
 def updateTaskIsActive(id, is_active):
     alterQuery("UPDATE tasks SET is_active = ? WHERE id = ?", (is_active, id))
+
+
+def updateTaskDisableToday(id, disable_today):
+    alterQuery("UPDATE tasks SET disable_today = ? WHERE id = ?", (disable_today, id))
 
 
 def updateTasksOrderList(order_list):
@@ -146,9 +152,8 @@ def updateTasksOrderList(order_list):
 
 
 def updateNextDayTasks():
-    alterQuery(
-        "UPDATE tasks SET is_active = 0 WHERE (repeat = '' or INSTR(repeat, '+') > 0) AND is_done = 1"
-    )
+    alterQuery("UPDATE tasks SET disable_today = 0 WHERE disable_today = 1")
+    alterQuery("UPDATE tasks SET is_active = 0 WHERE (repeat = '' or INSTR(repeat, '+') > 0) AND is_done = 1")
     alterQuery("UPDATE tasks SET is_done = 0 WHERE repeat != ''")
     alterQuery(
         "UPDATE sub_tasks SET is_done = 0 WHERE task_id IN (SELECT sub_tasks.task_id FROM sub_tasks JOIN tasks ON sub_tasks.task_id = tasks.id WHERE tasks.repeat != '')"

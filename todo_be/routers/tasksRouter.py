@@ -50,6 +50,12 @@ def deleteTask():
     return tasksService.deleteTask(data["task_id"])
 
 
+@tasks_bp.route("/disableTaskToday", methods=["POST"])
+def disableTaskToday():
+    data = request.get_json()
+    return tasksService.disableTaskToday(data["task_id"])
+
+
 @tasks_bp.route("/getNextDayTasks")
 def getNextDayTasks():
     args = request.args
