@@ -1,12 +1,11 @@
 ## Environment pre-requirements
 
-1. Clone project:
+1. Download `git` [here](https://github.com/git-for-windows/git/releases/download/v2.43.0.windows.1/Git-2.43.0-64-bit.exe)
+2. Clone project:
 
     ```cmd
     git clone https://github.com/Elbargho/todo.git
     ```
-    
-2. Download `git` [here](https://github.com/git-for-windows/git/releases/download/v2.43.0.windows.1/Git-2.43.0-64-bit.exe)
 3. Download `python` [here](https://www.python.org/ftp/python/3.12.1/python-3.12.1-amd64.exe)
 4. Download `node.js` (v20.11.0) [here](https://nodejs.org/dist/v20.11.0/node-v20.11.0-x64.msi)
 5. Install required `python packages`:
