@@ -18,15 +18,19 @@ def addNoteList(note_name):
 
 
 def addNote(note_list_id, text):
+    dbm.updateNoteListLastUpdated(note_list_id)
     return {"id": dbm.addNote(note_list_id, text)}
 
 
 def editNote(id, new_text):
+    note_list_id = dbm.getNoteListId(id)
+    dbm.updateNoteListLastUpdated(note_list_id)
     dbm.editNote(id, new_text)
     return {}
 
 
 def editNoteList(id, new_name):
+    dbm.updateNoteListLastUpdated(id)
     dbm.editNoteList(id, new_name)
     return {}
 

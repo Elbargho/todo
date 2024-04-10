@@ -2,7 +2,8 @@ CREATE TABLE notes_list (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
     is_active INTEGER,
-    created_at TIMESTAMP
+    created_at TIMESTAMP,
+    last_updated TIMESTAMP
 );
 
 CREATE TABLE notes (

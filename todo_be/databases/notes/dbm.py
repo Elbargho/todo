@@ -8,9 +8,7 @@ alterQuery, selectQuery = db.alterQuery, db.selectQuery
 
 
 def getNotesList():
-    return selectQuery(
-        "SELECT id, name FROM notes_list WHERE is_active = 1 ORDER BY id DESC"
-    )
+    return selectQuery("SELECT id, name FROM notes_list WHERE is_active = 1 ORDER BY last_updated DESC")
 
 
 def getNoteContents(id):
@@ -19,18 +17,24 @@ def getNoteContents(id):
         (id,),
     )
 
+def getNoteListId(note_id):
+    return selectQuery(
+        "SELECT note_list_id FROM notes WHERE id = ?",
+        (note_id,),
+    )[0]["note_list_id"]
+
 
 def addNoteList(name):
-    created_at = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d")
+    created_at = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d %H:%M:%S")
 
     return alterQuery(
-        "INSERT INTO notes_list (name, is_active, created_at) VALUES (?, ?, ?) RETURNING id",
-        (name, 1, created_at),
+        "INSERT INTO notes_list (name, is_active, created_at, last_updated) VALUES (?, ?, ?, ?) RETURNING id",
+        (name, 1, created_at, created_at),
     )[0]["id"]
 
 
 def addNote(note_list_id, text):
-    created_at = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d")
+    created_at = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d %H:%M:%S")
 
     return alterQuery(
         "INSERT INTO notes (note_list_id, text, is_active, created_at) VALUES (?, ?, ?, ?) RETURNING id",
@@ -49,6 +53,15 @@ def editNote(id, new_text):
     alterQuery(
         "UPDATE notes SET text = ? WHERE id = ?",
         (new_text, id),
+    )
+
+
+def updateNoteListLastUpdated(id):
+    last_updated = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d %H:%M:%S")
+
+    alterQuery(
+        "UPDATE notes_list SET last_updated = ? WHERE id = ?",
+        (last_updated, id),
     )
 
 

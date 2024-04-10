@@ -26,3 +26,7 @@ if __name__ == "__main__":
 
     curr_day_str = datetime.now(pytz.timezone("Israel")).strftime("%a %d/%m/%Y")
     tasks.alterQuery("INSERT INTO today (current_day) VALUES (?)", (curr_day_str,))
+
+    # notes.alterQuery("UPDATE notes_list SET created_at = created_at || ' 00:00:01'")
+    # notes.alterQuery("ALTER TABLE notes_list ADD COLUMN last_updated TIMESTAMP")
+    # notes.alterQuery("UPDATE notes_list SET last_updated = created_at")
