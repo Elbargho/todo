@@ -130,7 +130,7 @@ def deleteTask(task_id):
 
 
 def disableTaskToday(task_id):
-    dbm.updateTaskDisableToday(task_id, 0)
+    dbm.updateTaskDisableToday(task_id, 1)
     return {}, 204
 
 
