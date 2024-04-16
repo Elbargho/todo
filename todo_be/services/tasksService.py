@@ -1,6 +1,10 @@
+from databases.interface import DatabaseInterface
 from databases.tasks import dbm
 from datetime import datetime
 from .common import *
+
+
+db = DatabaseInterface("tasks")
 
 
 ################### ENDPOINT PROCESSORS ###################
@@ -28,30 +32,31 @@ def getCategoryTasks(category_id, current_day, reverse=False):
             reverse=reverse,
         )
     return sorted(
-        [
-            {**excludeFields(task), "sub_tasks": getSubTasks(task["id"])}
-            for task in tasks
-        ],
+        [{**excludeFields(task), "sub_tasks": getSubTasks(task["id"])} for task in tasks],
         key=lambda x: tasks_order.index(x["id"]),
         reverse=reverse,
     )
 
 
+@db.commit
 def addCategory(name):
     new_category = dbm.addCategory(name)
     return excludeFields(new_category)
 
 
+@db.commit
 def editCategory(id, new_name):
     dbm.updateCategoryName(id, new_name)
     return {}
 
 
+@db.commit
 def deleteCategory(id):
     dbm.updateCategoryIsActive(id, 0)
     return {}, 204
 
 
+@db.commit
 def updateTaskStatus(task_id, sub_task_id, is_multi_task):
     if not is_multi_task:
         is_done, repeat = dbm.updateTaskIsDone(task_id)
@@ -89,38 +94,33 @@ def updateTaskStatus(task_id, sub_task_id, is_multi_task):
     }
 
 
+@db.commit
 def addTask(category_id, raw_title, current_day, times_done=0):
-    new_task_id, new_task = addTaskReturningRawData(
-        category_id, raw_title, times_done, current_day
-    )
+    new_task_id, new_task = addTaskReturningRawData(category_id, raw_title, times_done, current_day)
     tasks_order = dbm.getTasksOrderList()
     dbm.updateTasksOrderList(tasks_order + [new_task_id])
-    if int(category_id) == 1 and not isTaskDueToday(
-        new_task["repeat"], new_task["created_at"], current_day
-    ):
+    if int(category_id) == 1 and not isTaskDueToday(new_task["repeat"], new_task["created_at"], current_day):
         return {}
     return excludeFields(new_task)
 
 
+@db.commit
 def editTask(task_id, category_id, raw_title, current_day):
     deactivateTask(task_id)
     task = dbm.getTask(task_id)
     times_done = task["times_done"] if task["times_done"] != None else 0
-    new_task_id, new_task = addTaskReturningRawData(
-        task["category_id"], raw_title, times_done, current_day
-    )
+    new_task_id, new_task = addTaskReturningRawData(task["category_id"], raw_title, times_done, current_day)
     dbm.addTaskHistory(task_id, new_task_id)
     tasks_order = dbm.getTasksOrderList()
     idx = tasks_order.index(task_id)
     tasks_order[idx] = new_task_id
     dbm.updateTasksOrderList(tasks_order)
-    if int(category_id) == 1 and not isTaskDueToday(
-        new_task["repeat"], new_task["created_at"], current_day
-    ):
+    if int(category_id) == 1 and not isTaskDueToday(new_task["repeat"], new_task["created_at"], current_day):
         return {}, 204
     return excludeFields(new_task)
 
 
+@db.commit
 def deleteTask(task_id):
     tasks_order = dbm.getTasksOrderList()
     tasks_order.remove(task_id)
@@ -129,11 +129,13 @@ def deleteTask(task_id):
     return {}, 204
 
 
+@db.commit
 def disableTaskToday(task_id):
     dbm.updateTaskDisableToday(task_id, 1)
     return {}, 204
 
 
+@db.commit
 def getNextDayTasks(category_id, current_day):
     dbm.updateNextDayTasks()
     current_day = dbm.addNextDay(current_day)
@@ -198,9 +200,7 @@ def addTaskReturningRawData(category_id, raw_title, times_done, current_day):
         elif kw[:3] == "st:":
             sub_tasks_title = [st.strip() for st in kw[3:].split(",")]
     times_done = None if repeat == "" or "+" in repeat else times_done
-    new_task_id = dbm.addTask(
-        category_id, title, raw_title.strip(), 0, repeat, times_done, current_day
-    )
+    new_task_id = dbm.addTask(category_id, title, raw_title.strip(), 0, repeat, times_done, current_day)
     for title in sub_tasks_title:
         dbm.addSubTask(new_task_id, title, 0)
     new_task = dbm.getTask(new_task_id)

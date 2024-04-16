@@ -1,6 +1,6 @@
 import re
 
-fieldsToExclude = ["created_at", "category_id", "is_active", "task_id", "done_at"]
+fieldsToExclude = ["created_at", "category_id", "is_active", "task_id", "done_at", "disable_today"]
 
 
 def excludeFields(dict):

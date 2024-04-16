@@ -1,11 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, g, render_template
 from flask_cors import CORS
 from routers import tasksRouter, trackerRouter, notesRouter
 from configparser import ConfigParser
 
-app = Flask(
-    __name__, static_url_path="", static_folder="build", template_folder="build"
-)
+app = Flask(__name__, static_url_path="", static_folder="build", template_folder="build")
 CORS(app)
 config = ConfigParser()
 
@@ -16,6 +14,13 @@ notes_blueprint = notesRouter.notes_bp
 app.register_blueprint(tasks_blueprint, url_prefix="/tasks")
 app.register_blueprint(tracker_blueprint, url_prefix="/tracker")
 app.register_blueprint(notes_blueprint, url_prefix="/notes")
+
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 
 @app.route("/")

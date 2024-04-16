@@ -1,32 +1,40 @@
 from databases.interface import DatabaseInterface
 from databases.tasks import dbm as tasks_dbm
 from datetime import datetime
-from configparser import ConfigParser
 import pytz
+from configparser import ConfigParser
+from app import app
 
 tasks = DatabaseInterface("tasks")
 tracker = DatabaseInterface("tracker")
 notes = DatabaseInterface("notes")
-config = ConfigParser()
 
-def initDBs(debug):
-    tasks.initDb(debug)
-    tracker.initDb(debug)
-    notes.initDb(debug)
+
+def createDBs(debug):
+    tasks.createDb(debug)
+    tracker.createDb(debug)
+    notes.createDb(debug)
+
+
+def initDBs():
+    with app.app_context():
+        try:
+            conn = tasks.getConn()
+            tasks_dbm.addCategory("My Day")
+            tasks_dbm.addCategory("Work")
+            tasks.query("INSERT INTO tasks_order (order_list) VALUES (?)", ("[]"))
+            curr_day_str = datetime.now(pytz.timezone("Israel")).strftime("%a %d/%m/%Y")
+            tasks.query("INSERT INTO today (current_day) VALUES (?)", (curr_day_str,))
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            raise e
 
 
 if __name__ == "__main__":
+    config = ConfigParser()
     config.read("../devops/config.properties")
     debug = config.getboolean("DEBUG", "debug", fallback=False)
-    initDBs(debug)
 
-    tasks_dbm.addCategory("My Day")
-    tasks_dbm.addCategory("Work")
-    tasks_dbm.addTasksOrderList()
-
-    curr_day_str = datetime.now(pytz.timezone("Israel")).strftime("%a %d/%m/%Y")
-    tasks.alterQuery("INSERT INTO today (current_day) VALUES (?)", (curr_day_str,))
-
-    # notes.alterQuery("UPDATE notes_list SET created_at = created_at || ' 00:00:01'")
-    # notes.alterQuery("ALTER TABLE notes_list ADD COLUMN last_updated TIMESTAMP")
-    # notes.alterQuery("UPDATE notes_list SET last_updated = created_at")
+    createDBs(debug)
+    initDBs()
