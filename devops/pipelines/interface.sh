@@ -5,7 +5,8 @@ RED='\033[0;31m'
 GRAY='\033[1;30m'
 NOCOLOR='\033[0m'
 
-DEVOPS_FOLDER="devops"
+TODO_REACT_FOLDER="todo_react"
+TODO_BE_FOLDER="todo_be"
 
 log_success() {
     echo -e "${GREEN}[SUCCESS]${NOCOLOR} $1"
