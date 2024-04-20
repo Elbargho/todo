@@ -21,10 +21,10 @@ const getCurrentDay = async () => {
   }
 };
 
-const getCategoryTasks = async (category_id, current_day) => {
+const getCategoryTasks = async (category_id) => {
   try {
     const res = await axios.get(
-      `${baseUrl}/tasks/getCategoryTasks?category_id=${category_id}&current_day=${current_day}`
+      `${baseUrl}/tasks/getCategoryTasks?category_id=${category_id}`
     );
     return res.data;
   } catch (error) {
@@ -44,8 +44,8 @@ const updateTaskStatus = async (task_id, sub_task_id, is_multi_task) => {
   }
 };
 
-const editTask = async (task_id, category_id, raw_title, current_day) => {
-  const data = { task_id: task_id, category_id: category_id, raw_title: raw_title, current_day: current_day };
+const editTask = async (task_id, category_id, raw_title) => {
+  const data = { task_id: task_id, category_id: category_id, raw_title: raw_title };
   try {
     const res = await axios.post(`${baseUrl}/tasks/editTask`, data);
     return res.data;
@@ -77,8 +77,8 @@ const disableTaskToday = async (id) => {
   }
 };
 
-const addTask = async (category_id, raw_title, current_day) => {
-  const data = { category_id: category_id, raw_title: raw_title, current_day: current_day };
+const addTask = async (category_id, raw_title) => {
+  const data = { category_id: category_id, raw_title: raw_title };
   try {
     const res = await axios.post(`${baseUrl}/tasks/addTask`, data);
     return res.data;
@@ -88,10 +88,10 @@ const addTask = async (category_id, raw_title, current_day) => {
   }
 };
 
-const getNextDayTasks = async (category_id, current_day) => {
+const getNextDayTasks = async (category_id) => {
   try {
     const res = await axios.get(
-      `${baseUrl}/tasks/getNextDayTasks?category_id=${category_id}&current_day=${current_day}`
+      `${baseUrl}/tasks/getNextDayTasks?category_id=${category_id}`
     );
     return res.data;
   } catch (error) {

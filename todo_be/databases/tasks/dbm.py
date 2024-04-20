@@ -9,19 +9,15 @@ query = db.query
 
 
 def addCategory(name):
-    created_at = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d %H:%M:%S")
-
+    created_at = getCurrentDay()
     return query(
         "INSERT INTO categories (name, is_active, created_at) VALUES (?, ?, ?) RETURNING *",
         (name, 1, created_at),
     )[0]
 
 
-def addTask(category_id, title, raw_title, is_done, repeat, times_done, created_at):
-    # created_at = datetime.now(pytz.timezone('Israel')).strftime(
-    #     "%Y-%m-%d %H:%M:%S")
-    created_at = created_at.split(" ")[1]
-
+def addTask(category_id, title, raw_title, is_done, repeat, times_done):
+    created_at = getCurrentDay()
     return query(
         "INSERT INTO tasks (category_id, title, raw_title, is_done, repeat, times_done, is_active, disable_today, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
         (category_id, title, raw_title, is_done, repeat, times_done, 1, 0, created_at),
@@ -29,9 +25,10 @@ def addTask(category_id, title, raw_title, is_done, repeat, times_done, created_
 
 
 def addSubTask(task_id, title, is_done):
+    created_at = getCurrentDay()
     query(
-        "INSERT INTO sub_tasks (task_id, title, is_done) VALUES (?, ?, ?)",
-        (task_id, title, is_done),
+        "INSERT INTO sub_tasks (task_id, title, is_done, created_at) VALUES (?, ?, ?, ?)",
+        (task_id, title, is_done, created_at),
     )
 
 
@@ -42,12 +39,45 @@ def addTaskHistory(task_id, updated_task_id):
     )
 
 
-def addNextDay(current_day_str):
-    current_day_date = datetime.strptime(current_day_str, "%a %d/%m/%Y")
+def updateCurrentDay():
+    current_day_str = getCurrentDay()
+    current_day_date = datetime.strptime(current_day_str, "%Y-%m-%d")
     next_day_date = current_day_date + timedelta(days=1)
-    next_day_str = next_day_date.strftime("%a %d/%m/%Y")
-    query("INSERT INTO today (current_day) VALUES (?)", (next_day_str,))
+    next_day_str = next_day_date.strftime("%Y-%m-%d")
+    query("UPDATE today SET current_day = ?", (next_day_str,))
     return next_day_str
+
+
+def addTaskProgress(task_id):
+    now = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d %H:%M:%S")
+    time = now.split(' ')[1]
+    done_at = f"{getCurrentDay()} {time}"
+    query("INSERT INTO tasks_progress (task_id, done_at, now) VALUES (?, ?, ?)", (task_id, done_at, now))
+
+
+def addSubTaskProgress(sub_task_id):
+    now = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d %H:%M:%S")
+    time = now.split(' ')[1]
+    done_at = f"{getCurrentDay()} {time}"
+    query("INSERT INTO sub_tasks_progress (sub_task_id, done_at, now) VALUES (?, ?, ?)", (sub_task_id, done_at, now))
+
+
+def removeTaskProgress(task_id):
+    date = getCurrentDay()
+    query("DELETE FROM tasks_progress WHERE task_id = ? AND done_at LIKE ? || '%'", (task_id, date))
+
+
+def removeSubTaskProgress(sub_task_id):
+    date = getCurrentDay()
+    query("DELETE FROM sub_tasks_progress WHERE sub_task_id = ? AND done_at LIKE ? || '%'", (sub_task_id, date))
+
+
+def removeTaskAllSubTasksProgress(task_id):
+    date = getCurrentDay()
+    query(
+        "DELETE FROM sub_tasks_progress WHERE sub_task_id IN (SELECT id FROM sub_tasks WHERE task_id = ?) AND done_at LIKE ? || '%'",
+        (task_id, date),
+    )
 
 
 def getCategories():
@@ -97,7 +127,7 @@ def getTasksOrderList():
 
 
 def getCurrentDay():
-    return query("SELECT current_day FROM today ORDER BY id DESC LIMIT 1")[0]
+    return query("SELECT current_day FROM today LIMIT 1")[0]["current_day"]
 
 
 def updateCategoryName(id, name):
@@ -147,10 +177,12 @@ def updateTasksOrderList(order_list):
     query("UPDATE tasks_order SET order_list = ?", order_list_str)
 
 
-def updateNextDayTasks():
+def updateNextDayTasks(is_first_day_of_month):
     query("UPDATE tasks SET disable_today = 0 WHERE disable_today = 1")
     query("UPDATE tasks SET is_active = 0 WHERE (repeat = '' or INSTR(repeat, '+') > 0) AND is_done = 1")
     query("UPDATE tasks SET is_done = 0 WHERE repeat != ''")
     query(
         "UPDATE sub_tasks SET is_done = 0 WHERE task_id IN (SELECT sub_tasks.task_id FROM sub_tasks JOIN tasks ON sub_tasks.task_id = tasks.id WHERE tasks.repeat != '')"
     )
+    if is_first_day_of_month:
+        query("UPDATE tasks SET times_done = 0 WHERE is_active = 1")

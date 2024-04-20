@@ -12,7 +12,7 @@ export default function ToDoList() {
   const [tasks, setTasks] = useState();
 
   const getNextDayTasks = async () => {
-    const data = await API.getNextDayTasks(selectedCategoryId, currentDay);
+    const data = await API.getNextDayTasks(selectedCategoryId);
     if (data != null) {
       setCurrentDay(data["current_day"]);
       setTasks(data["tasks"]);
@@ -33,7 +33,7 @@ export default function ToDoList() {
   useEffect(() => {
     if (selectedCategoryId != null) {
       (async () => {
-        const data = await API.getCategoryTasks(selectedCategoryId, currentDay);
+        const data = await API.getCategoryTasks(selectedCategoryId);
         if (data != null) {
           setTasks(data);
         }
@@ -55,7 +55,7 @@ export default function ToDoList() {
             <Header title={categories.find((cat) => cat.id == selectedCategoryId).name}>
               {selectedCategoryId == 1 && <TodayManager date={currentDay} nextOnClick={getNextDayTasks} />}
             </Header>
-            <Category id={selectedCategoryId} tasks={tasks} current_day={currentDay} />
+            <Category id={selectedCategoryId} tasks={tasks} />
           </Container>
         </>
       )}

@@ -18,12 +18,24 @@ CREATE TABLE tasks (
     created_at TIMESTAMP
 );
 
+CREATE TABLE tasks_progress (
+    task_id INTEGER REFERENCES tasks(id),
+    done_at TIMESTAMP,
+    now TIMESTAMP
+);
+
 CREATE TABLE sub_tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     task_id INTEGER REFERENCES tasks(id),
     title TEXT,
     is_done INTEGER,
     created_at TIMESTAMP
+);
+
+CREATE TABLE sub_tasks_progress (
+    sub_task_id INTEGER REFERENCES sub_tasks(id),
+    done_at TIMESTAMP,
+    now TIMESTAMP
 );
 
 CREATE TABLE tasks_history (
@@ -36,6 +48,5 @@ CREATE TABLE tasks_order (
 );
 
 CREATE TABLE today (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     current_day TIMESTAMP
 );

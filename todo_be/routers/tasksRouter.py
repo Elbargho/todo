@@ -17,31 +17,25 @@ def getCurrentDay():
 @tasks_bp.route("/getCategoryTasks")
 def getCategoryTasks():
     args = request.args
-    return tasksService.getCategoryTasks(args["category_id"], args["current_day"])
+    return tasksService.getCategoryTasks(args["category_id"])
 
 
 @tasks_bp.route("/updateTaskStatus", methods=["POST"])
 def updateTaskStatus():
     data = request.get_json()
-    return tasksService.updateTaskStatus(
-        data["task_id"], data["sub_task_id"], data["is_multi_task"]
-    )
+    return tasksService.updateTaskStatus(data["task_id"], data["sub_task_id"], data["is_multi_task"])
 
 
 @tasks_bp.route("/addTask", methods=["POST"])
 def addTask():
     data = request.get_json()
-    return tasksService.addTask(
-        data["category_id"], data["raw_title"], data["current_day"]
-    )
+    return tasksService.addTask(data["category_id"], data["raw_title"])
 
 
 @tasks_bp.route("/editTask", methods=["POST"])
 def editTask():
     data = request.get_json()
-    return tasksService.editTask(
-        data["task_id"], data["category_id"], data["raw_title"], data["current_day"]
-    )
+    return tasksService.editTask(data["task_id"], data["category_id"], data["raw_title"])
 
 
 @tasks_bp.route("/deleteTask", methods=["POST"])
@@ -59,7 +53,7 @@ def disableTaskToday():
 @tasks_bp.route("/getNextDayTasks")
 def getNextDayTasks():
     args = request.args
-    return tasksService.getNextDayTasks(args["category_id"], args["current_day"])
+    return tasksService.getNextDayTasks(args["category_id"])
 
 
 @tasks_bp.route("/addCategory", methods=["POST"])

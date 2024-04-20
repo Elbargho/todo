@@ -9,7 +9,7 @@ import { showPopUp } from "../Common";
 const SubTaskDoneAudio = new Audio("/audio/SubTask_Done.mp3");
 const TaskDoneAudio = new Audio("/audio/Task_Done.mp3");
 
-export default function Category({ id, tasks, current_day }) {
+export default function Category({ id, tasks }) {
   const [categoryTasks, setCategoryTasks] = useState(tasks);
   const [taskAdderInputId, setTaskAdderInputId] = useState(null);
   const [tasksContainer, setTasksContainer] = useState([]);
@@ -105,7 +105,7 @@ export default function Category({ id, tasks, current_day }) {
   };
 
   const editTask = async (updatedRawTitle) => {
-    const updatedTask = await API.editTask(taskAdderInputId, id, updatedRawTitle, current_day);
+    const updatedTask = await API.editTask(taskAdderInputId, id, updatedRawTitle);
     if (updatedTask != null) {
       const updatedCategoryTasks = [...categoryTasks];
       const idx = updatedCategoryTasks.findIndex((task) => task.id == taskAdderInputId);
@@ -115,7 +115,7 @@ export default function Category({ id, tasks, current_day }) {
   };
 
   const addTask = async (rawTitle) => {
-    const newTask = await API.addTask(id, rawTitle, current_day);
+    const newTask = await API.addTask(id, rawTitle);
     if (newTask != null) {
       if (Object.keys(newTask).length > 0) {
         const updatedCategoryTasks = [...categoryTasks, newTask];

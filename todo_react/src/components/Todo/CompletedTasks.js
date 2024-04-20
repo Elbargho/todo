@@ -28,7 +28,7 @@ export default function CompletedTasks({ children }) {
         >
           <Typography sx={{ paddingLeft: "12px" }}>Completed</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ padding: "10px 0px 10px" }}>{children}</AccordionDetails>
+        <AccordionDetails sx={{ padding: "10px 0px 5px" }}>{children}</AccordionDetails>
       </Accordion>
       <div
         style={{

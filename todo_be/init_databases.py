@@ -20,11 +20,11 @@ def initDBs():
     with app.app_context():
         try:
             conn = tasks.getConn()
+            curr_day_str = datetime.now(pytz.timezone("Israel")).strftime("%Y-%m-%d")
+            tasks.query("INSERT INTO today (current_day) VALUES (?)", (curr_day_str,))
             tasks_dbm.addCategory("My Day")
             tasks_dbm.addCategory("Work")
             tasks.query("INSERT INTO tasks_order (order_list) VALUES (?)", ("[]"))
-            curr_day_str = datetime.now(pytz.timezone("Israel")).strftime("%a %d/%m/%Y")
-            tasks.query("INSERT INTO today (current_day) VALUES (?)", (curr_day_str,))
             conn.commit()
         except Exception as e:
             conn.rollback()
