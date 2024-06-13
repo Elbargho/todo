@@ -9,10 +9,15 @@ export default function EditableNote({ text, onBlur, autoFocus = false }) {
   };
 
   const onKeyDown = (event) => {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       event.preventDefault();
-      const newValue = noteText + '\t';
+      const cursorPosition = event.target.selectionStart;
+      const newValue = noteText.slice(0, cursorPosition) + "\t" + noteText.slice(cursorPosition);
       setNoteText(newValue);
+      setTimeout(() => {
+        event.target.selectionStart = cursorPosition + 1;
+        event.target.selectionEnd = cursorPosition + 1;
+      }, 0);
     }
   };
 
