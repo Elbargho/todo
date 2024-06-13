@@ -8,6 +8,14 @@ export default function EditableNote({ text, onBlur, autoFocus = false }) {
     setNoteText(event.target.value);
   };
 
+  const onKeyDown = (event) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const newValue = noteText + '\t';
+      setNoteText(newValue);
+    }
+  };
+
   return (
     <Container maxWidth={false} className="NoteContainer" disableGutters>
       <TextField
@@ -16,6 +24,7 @@ export default function EditableNote({ text, onBlur, autoFocus = false }) {
         onBlur={() => onBlur(noteText)}
         multiline
         autoFocus={autoFocus}
+        onKeyDown={onKeyDown}
       />
     </Container>
   );
