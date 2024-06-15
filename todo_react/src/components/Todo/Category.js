@@ -34,14 +34,14 @@ export default function Category({ id, tasks }) {
           id={task.id}
           {...task}
           updateTaskStatus={updateMultiTaskStatus}
-          onContextMenu={(event) => handleContextMenu(event, task.id)}
+          onContextMenu={(event) => handleContextMenu(event, task.id, task.is_in_my_day)}
         />
       ) : (
         <OneTask
           id={task.id}
           {...task}
           updateTaskStatus={updateSingleTaskStatus}
-          onContextMenu={(event) => handleContextMenu(event, task.id)}
+          onContextMenu={(event) => handleContextMenu(event, task.id, task.is_in_my_day)}
         />
       );
 
@@ -136,6 +136,21 @@ export default function Category({ id, tasks }) {
     if (res != null) removeTaskFromCategoryTasks(task_id);
   };
 
+  const updateTaskIsInMyDay = async (task_id) => {
+    const data = await API.updateTaskIsInMyDay(task_id);
+    if (data != null) {
+      if (id == 1) removeTaskFromCategoryTasks(task_id);
+      else {
+        const updatedCategoryTasks = [...categoryTasks];
+        const idx = updatedCategoryTasks.findIndex((task) => task.id == task_id);
+        updatedCategoryTasks[idx].is_in_my_day = data.is_in_my_day;
+        setCategoryTasks(updatedCategoryTasks);
+      }
+      const update_msg = data.is_in_my_day ? "Task Added To My Day" : "Task Removed From My Day";
+      showPopUp("success", update_msg);
+    }
+  };
+
   const disableTaskToday = async (task_id) => {
     const res = await API.disableTaskToday(task_id);
     if (res != null) removeTaskFromCategoryTasks(task_id);
@@ -143,7 +158,9 @@ export default function Category({ id, tasks }) {
 
   const { contextMenu, handleContextMenu } = ContextMenu({
     editItem: setTaskAdderInputId,
-    disableToday: id == 1 ? disableTaskToday : null,
+    removeFromMyDay: updateTaskIsInMyDay,
+    addToMyDay: updateTaskIsInMyDay,
+    disableToday: disableTaskToday,
     deleteItem: deleteTask,
   });
 

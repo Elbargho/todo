@@ -1,17 +1,19 @@
 import { Alert, Container } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function PopUp() {
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
   const [visible, setVisible] = useState(false);
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const handleAlert = (e) => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setType(e.detail.type);
       setMessage(e.detail.message);
       setVisible(true);
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setVisible(false);
       }, 5000);
     };

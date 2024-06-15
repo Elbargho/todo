@@ -23,9 +23,7 @@ const getCurrentDay = async () => {
 
 const getCategoryTasks = async (category_id) => {
   try {
-    const res = await axios.get(
-      `${baseUrl}/tasks/getCategoryTasks?category_id=${category_id}`
-    );
+    const res = await axios.get(`${baseUrl}/tasks/getCategoryTasks?category_id=${category_id}`);
     return res.data;
   } catch (error) {
     showErrorPopUp(error);
@@ -77,6 +75,17 @@ const disableTaskToday = async (id) => {
   }
 };
 
+const updateTaskIsInMyDay = async (id) => {
+  const data = { task_id: id };
+  try {
+    const res = await axios.post(`${baseUrl}/tasks/updateTaskIsInMyDay`, data);
+    return res.data;
+  } catch (error) {
+    showErrorPopUp(error);
+    return null;
+  }
+};
+
 const addTask = async (category_id, raw_title) => {
   const data = { category_id: category_id, raw_title: raw_title };
   try {
@@ -90,9 +99,7 @@ const addTask = async (category_id, raw_title) => {
 
 const getNextDayTasks = async (category_id) => {
   try {
-    const res = await axios.get(
-      `${baseUrl}/tasks/getNextDayTasks?category_id=${category_id}`
-    );
+    const res = await axios.get(`${baseUrl}/tasks/getNextDayTasks?category_id=${category_id}`);
     return res.data;
   } catch (error) {
     showErrorPopUp(error);
@@ -140,12 +147,13 @@ const API = {
   updateTaskStatus,
   editTask,
   deleteTask,
+  updateTaskIsInMyDay,
   disableTaskToday,
   addTask,
   getNextDayTasks,
   addCategory,
   editCategory,
-  deleteCategory
+  deleteCategory,
 };
 
 export default API;

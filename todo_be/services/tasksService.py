@@ -144,6 +144,12 @@ def deleteTask(task_id):
 
 
 @db.commit
+def updateTaskIsInMyDay(task_id):
+    is_in_my_day = dbm.updateTaskIsInMyDay(task_id)
+    return {"is_in_my_day": is_in_my_day}
+
+
+@db.commit
 def disableTaskToday(task_id):
     dbm.updateTaskDisableToday(task_id, 1)
     return {}, 204
@@ -165,6 +171,7 @@ def transformCurrentDayToUiForm(current_day_str):
     current_day = datetime.strptime(current_day_str, "%Y-%m-%d")
     current_day_ui_form = current_day.strftime("%a %d/%m/%Y")
     return current_day_ui_form
+
 
 def resetTask(task_id, with_times_done):
     dbm.updateTaskAllSubTasksIsDone(task_id)

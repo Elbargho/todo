@@ -18,9 +18,10 @@ def addCategory(name):
 
 def addTask(category_id, title, raw_title, is_done, repeat, times_done):
     created_at = getCurrentDay()
+    is_in_my_day = None if category_id == 1 else True
     return query(
-        "INSERT INTO tasks (category_id, title, raw_title, is_done, repeat, times_done, is_active, disable_today, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
-        (category_id, title, raw_title, is_done, repeat, times_done, 1, 0, created_at),
+        "INSERT INTO tasks (category_id, title, raw_title, is_done, repeat, times_done, is_active, is_in_my_day, disable_today, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+        (category_id, title, raw_title, is_done, repeat, times_done, 1, is_in_my_day, 0, created_at),
     )[0]["id"]
 
 
@@ -87,7 +88,7 @@ def getCategories():
 def getCategoryTasks(category_id):
     if int(category_id) == 1:
         return query(
-            "SELECT t.*, c.name as category_name FROM tasks AS t JOIN categories AS c ON t.category_id = c.id WHERE t.disable_today = 0 AND t.is_active = 1 AND c.is_active = 1 ORDER BY t.id DESC"
+            "SELECT t.*, c.name as category_name FROM tasks AS t JOIN categories AS c ON t.category_id = c.id WHERE (t.is_in_my_day IS NULL OR t.is_in_my_day = 1) AND t.disable_today = 0 AND t.is_active = 1 AND c.is_active = 1 ORDER BY t.id DESC"
         )
     return query(
         "SELECT * FROM tasks WHERE is_active = 1 AND category_id = ? ORDER BY id DESC",
@@ -168,6 +169,12 @@ def updateTaskIsActive(id, is_active):
     query("UPDATE tasks SET is_active = ? WHERE id = ?", (is_active, id))
 
 
+def updateTaskIsInMyDay(id):
+    return query("UPDATE tasks SET is_in_my_day = 1 - is_in_my_day WHERE id = ? RETURNING is_in_my_day", (id))[0][
+        "is_in_my_day"
+    ]
+
+
 def updateTaskDisableToday(id, disable_today):
     query("UPDATE tasks SET disable_today = ? WHERE id = ?", (disable_today, id))
 
@@ -185,4 +192,4 @@ def updateNextDayTasks(is_first_day_of_month):
         "UPDATE sub_tasks SET is_done = 0 WHERE task_id IN (SELECT sub_tasks.task_id FROM sub_tasks JOIN tasks ON sub_tasks.task_id = tasks.id WHERE tasks.repeat != '')"
     )
     if is_first_day_of_month:
-        query("UPDATE tasks SET times_done = 0 WHERE is_active = 1")
+        query("UPDATE tasks SET times_done = 0 WHERE times_done IS NOT NULL AND is_active = 1")
