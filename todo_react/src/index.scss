@@ -145,8 +145,12 @@ textarea {
   }
 }
 
-div[class$="MuiPaper-root-MuiAccordion-root"]:before {
-  display: none;
+.MuiAccordion-root:before {
+  visibility: hidden;
+}
+
+.MuiAccordionDetails-root {
+  padding: 3px 0px 3px !important;
 }
 
 .ColorsMenu {
