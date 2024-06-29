@@ -169,6 +169,11 @@ textarea {
   background-color: $task-container-color !important;
 }
 
+.appContainer {
+  padding: 24px;
+  overflow-x: hidden;
+}
+
 [contenteditable] {
   outline: 0px solid transparent;
 }

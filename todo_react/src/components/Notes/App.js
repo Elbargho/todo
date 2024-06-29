@@ -38,7 +38,7 @@ export default function Notes() {
             selectedNoteId={selectedNoteId}
             setSelectedNoteId={setSelectedNoteId}
           />
-          <Container sx={{ padding: "24px", overflow: "hidden" }} maxWidth={false}>
+          <Container className="appContainer" maxWidth={false}>
             {selectedNoteId != null && <Header title={notesList.find((x) => x.id == selectedNoteId).name} />}
             {noteContents != null && notesList.length != 0 && (
               <NotesContainer note_list_id={selectedNoteId} notes={noteContents} />

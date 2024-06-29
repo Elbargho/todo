@@ -51,7 +51,7 @@ export default function ToDoList() {
             selectedCategoryId={selectedCategoryId}
             setSelectedCategoryId={setSelectedCategoryId}
           />
-          <Container sx={{ padding: "24px", overflowX: "hidden" }} maxWidth={false}>
+          <Container className="appContainer" maxWidth={false}>
             <Header title={categories.find((cat) => cat.id == selectedCategoryId).name}>
               {selectedCategoryId == 1 && <TodayManager date={currentDay} nextOnClick={getNextDayTasks} />}
             </Header>

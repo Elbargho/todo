@@ -108,7 +108,7 @@ export default function Tracker() {
             updateCategoryStatus={updateCategoryStatus}
             deleteCategory={deleteCategory}
           />
-          <Container sx={{ padding: "24px", display: "flex", flexDirection: "column" }} maxWidth={false}>
+          <Container className="appContainer" sx={{ display: "flex", flexDirection: "column" }} maxWidth={false}>
             <Header title={"Calendar"}>
               <MonthManger
                 date={currMonthYear}
